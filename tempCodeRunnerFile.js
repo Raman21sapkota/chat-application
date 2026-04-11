@@ -1,0 +1,1 @@
+        friendRequestList =await db.query('SELECT * FROM notification WHERE targetAnonymousId = ?', [anonymousId]);
