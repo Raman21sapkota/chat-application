@@ -1,24 +1,11 @@
-const express = require('express');
-const anonymousId = require("./api/anonymousId");
-const message = require("./api/message");
-const router = require("./api/connectRequest");
-const connectRequest = router;
+import express from "express";
+
 const app = express();
 
-//anonymousid handler
-app.get("/",(req, res, next)=>{
-    res.status(200).json({message:"It works! ",name:"asdfasd"});
-}); 
+app.use(express.json());
 
-app.use("/anonymousid", anonymousId);
+app.get("/", (req, res) => {
+  res.json({ message: "SafeConnect API is running" });
+});
 
-
-// app.use("/trustcontact", connectRequest);
-
-//message handle
-app.use("/message", message);
-// app.use("/uni", (req, res, next)=>{
-//     res.status(200).json({message:"It works! ",name:"asdfasd"});
-// });
-
-module.exports = app;   
+export default app;
