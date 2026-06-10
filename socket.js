@@ -17,6 +17,26 @@ const broadcastOnlineUsers = (io) => {
   io.emit("users_online", online);
 };
 
+const deliverOfflineNotifications = async (userId, socket) => {
+  try {
+    const pending = await pool.query(
+      `SELECT fr.id, fr.sender_id, fr.created_at,
+              u.username, u.name
+       FROM friend_requests fr
+       JOIN users u ON u.id = fr.sender_id
+       WHERE fr.receiver_id = $1 AND fr.status = 'pending'`,
+      [userId]
+    );
+
+    if (pending.rows.length > 0) {
+      socket.emit("friend_request", { requests: pending.rows });
+      console.log("Delivered", pending.rows.length, "pending requests to user", userId);
+    }
+  } catch (error) {
+    console.error("Deliver offline notifications error:", error.message);
+  }
+};
+
 const handleSocket = (io, socket) => {
   let currentUserId = null;
 
@@ -33,6 +53,8 @@ const handleSocket = (io, socket) => {
       socket.emit("authenticated", { user_id: currentUserId });
       broadcastOnlineUsers(io);
       console.log("User", currentUserId, "authenticated on socket", socket.id);
+
+      deliverOfflineNotifications(currentUserId, socket);
     } catch (error) {
       socket.emit("error", { message: "Invalid token" });
     }
