@@ -102,7 +102,6 @@ npm start
 | `send_message` | `{ receiver_id, content }` | Send a message |
 | `edit_message` | `{ message_id, content }` | Edit your message |
 | `delete_message` | `{ message_id }` | Delete your message |
-| `typing` | `{ receiver_id }` | Typing indicator |
 
 ### Server to Client
 
@@ -113,7 +112,6 @@ npm start
 | `message_edited` | `{ id, content, is_edited, ... }` | Message was edited |
 | `message_deleted` | `{ id }` | Message was deleted |
 | `friend_request` | `{ requests: [...] }` | Pending friend requests (on auth) |
-| `typing` | `{ user_id }` | User is typing |
 | `users_online` | `[user_id, ...]` | List of online users |
 | `error` | `{ message }` | Error message |
 

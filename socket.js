@@ -168,11 +168,6 @@ const handleSocket = (io, socket) => {
     }
   });
 
-  socket.on("typing", (data) => {
-    if (!currentUserId || !data.receiver_id) return;
-    emitToUser(io, data.receiver_id, "typing", { user_id: currentUserId });
-  });
-
   socket.on("disconnect", () => {
     if (currentUserId) {
       const sockets = userSockets.get(currentUserId);
